@@ -1,0 +1,55 @@
+<div class="main-div">
+  <mat-card>
+    <form>
+      <mat-card-content
+        ><div fxLayout="row">
+          <div fxFlex="50%">
+            <img width="100%" src="{{ imagePath }}" />
+          </div>
+          <div fxFlex class="form-div">
+            <p style="text-align: center"><b>Billing Info</b></p>
+            <div>
+              <mat-form-field appearance="standard">
+                <mat-label>Your name</mat-label>
+                <input matInput [(ngModel)]="name" name="name" />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="standard">
+                <mat-label>Your email</mat-label>
+                <input matInput [(ngModel)]="email" name="email" />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="standard">
+                <mat-label>Your phone number</mat-label>
+                <input matInput [(ngModel)]="phone" name="phone" />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="standard">
+                <mat-label>Your address</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="address"
+                  name="address"
+                ></textarea>
+                <mat-hint>Please enter your correct address</mat-hint>
+              </mat-form-field>
+            </div>
+            <div>
+              <button
+                mat-button
+                type="submit"
+                style="float: right"
+                (click)="onSubmit()"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div></mat-card-content
+      >
+    </form></mat-card
+  >
+</div>

@@ -1,0 +1,24 @@
+.main-div {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.imgs {
+  padding-left: 10px;
+  height: 70px;
+  width: 50px;
+}
+.header-part {
+  display: flex;
+  justify-content: space-between;
+}
+.rating-component {
+  color: yellow;
+}
+.button-component {
+  background-color: rgb(221, 16, 50);
+  color: white;
+}

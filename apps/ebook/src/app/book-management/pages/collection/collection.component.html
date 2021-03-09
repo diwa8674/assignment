@@ -1,0 +1,52 @@
+<div
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutAlign="flex-start"
+  fxLayoutGap="50px"
+>
+  <mat-card
+    *ngFor="let book of books | async; trackBy: trackByBookId"
+    fxFlex="0 1 calc(44.7% - 10px)"
+    matRipple
+    class="clickable"
+  >
+    <mat-card-content>
+      <div class="header-part">
+        <span>
+          <mat-card-title>{{ book?.items.volumeInfo.title }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ book?.items.volumeInfo.subtitle }}
+          </mat-card-subtitle>
+        </span>
+        <span>
+          <img
+            mat-card-image
+            src="{{ book?.items.volumeInfo.imageLinks?.smallThumbnail }}"
+            alt="Photo of a Shiba Inu"
+            class="imgs"
+          />
+        </span>
+      </div>
+      <p>
+        {{
+          book?.items.volumeInfo.description
+            ? book.items.volumeInfo.description.length > 100
+              ? (book.items.volumeInfo.description | slice: 0:100) + '...'
+              : book.items.volumeInfo.description
+            : ''
+        }}
+      </p>
+      <b>Written By:</b><br />
+      <p>
+        {{ book?.items.volumeInfo.authors }}
+      </p>
+      <br />
+      <b>Billing Address:</b><br />
+      <p>
+        <b>Name: </b>{{ book?.name }}<br /><b>Email: </b>{{ book?.email
+        }}<br /><b>Phone: </b>{{ book?.phone }}<br /><b>Address: </b
+        >{{ book?.address }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

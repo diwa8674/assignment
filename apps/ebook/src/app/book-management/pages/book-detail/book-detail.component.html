@@ -1,0 +1,63 @@
+<div class="main-div">
+  <mat-card
+    ><mat-card-content>
+      <div class="header-part">
+        <span>
+          <mat-card-title>{{ book?.volumeInfo.title }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ book?.volumeInfo.subtitle }}
+          </mat-card-subtitle>
+        </span>
+        <span>
+          <img
+            mat-card-image
+            src="{{ book?.volumeInfo.imageLinks?.smallThumbnail }}"
+            alt="Photo of a Shiba Inu"
+            class="imgs"
+          />
+        </span>
+      </div>
+      <p>
+        <b>Rating:</b
+        ><ngb-rating
+          class="rating-component"
+          [max]="5"
+          [(rate)]="book?.volumeInfo.averageRating"
+          [readonly]="true"
+        ></ngb-rating>
+      </p>
+      <p>
+        <b>Publisher:</b>
+        "{{ book?.volumeInfo.publisher }}"
+      </p>
+      <p>
+        <b>Page Count:</b>
+        {{ book?.volumeInfo.pageCount }}
+      </p>
+      <p>
+        <b>Language:</b>
+        {{ book?.volumeInfo.language }}
+      </p>
+      <p>
+        {{ book?.volumeInfo.description }}
+      </p>
+      <b>Written By:</b><br />
+      <p>
+        {{ book?.volumeInfo.authors }}
+      </p>
+      <div>
+        <span
+          ><button class="button-component" (click)="addToCart()">
+            ADD TO CART
+          </button> </span
+        ><button
+          style="margin-left: 20px"
+          class="button-component"
+          (click)="purchaseBook()"
+        >
+          BUY</button
+        ><span></span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

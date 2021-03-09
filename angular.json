@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "ebook",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "ebook": {
+      "projectType": "application",
+      "root": "apps/ebook",
+      "sourceRoot": "apps/ebook/src",
+      "prefix": "assignment",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ebook",
+            "index": "apps/ebook/src/index.html",
+            "main": "apps/ebook/src/main.ts",
+            "polyfills": "apps/ebook/src/polyfills.ts",
+            "tsConfig": "apps/ebook/tsconfig.app.json",
+            "aot": true,
+            "assets": ["apps/ebook/src/favicon.ico", "apps/ebook/src/assets"],
+            "styles": ["apps/ebook/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ebook/src/environments/environment.ts",
+                  "with": "apps/ebook/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ebook:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ebook:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ebook:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ebook/src/**/*.ts",
+              "apps/ebook/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ebook"],
+          "options": {
+            "jestConfig": "apps/ebook/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ebook-e2e": {
+      "root": "apps/ebook-e2e",
+      "sourceRoot": "apps/ebook-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ebook-e2e/cypress.json",
+            "tsConfig": "apps/ebook-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ebook:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ebook:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/ebook-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}

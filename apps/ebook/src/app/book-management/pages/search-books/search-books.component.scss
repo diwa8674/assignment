@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  align-items: center;
+}
+.clickable {
+  cursor: pointer;
+  &:hover {
+    @include mat-elevation(8);
+  }
+  margin-top: 30px;
+}
+.imgs {
+  padding-left: 10px;
+  height: 70px;
+  width: 50px;
+}
+.header-part {
+  display: flex;
+  justify-content: space-between;
+}

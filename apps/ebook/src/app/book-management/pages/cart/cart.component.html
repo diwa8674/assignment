@@ -1,0 +1,104 @@
+<div
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutAlign="flex-start"
+  fxLayoutGap="50px"
+  *ngIf="showAllCartItems"
+>
+  <mat-card
+    *ngFor="let book of books | async; trackBy: trackByBookId"
+    fxFlex="0 1 calc(44.7% - 10px)"
+    (click)="onCardClick(book)"
+    matRipple
+    class="clickable"
+  >
+    <mat-card-content>
+      <div class="header-part">
+        <span>
+          <mat-card-title>{{ book?.volumeInfo.title }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ book?.volumeInfo.subtitle }}
+          </mat-card-subtitle>
+        </span>
+        <span>
+          <img
+            mat-card-image
+            src="{{ book?.volumeInfo.imageLinks?.smallThumbnail }}"
+            alt="Photo of a Shiba Inu"
+            class="imgs"
+          />
+        </span>
+      </div>
+      <p>
+        {{
+          book.volumeInfo.description
+            ? book.volumeInfo.description.length > 100
+              ? (book.volumeInfo.description | slice: 0:100) + '...'
+              : book.volumeInfo.description
+            : ''
+        }}
+      </p>
+      <b>Written By:</b><br />
+      <p>
+        {{ book?.volumeInfo.authors }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="!showAllCartItems">
+  <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start">
+    <mat-card fxFlex="0 calc(50% - 32px)" matRipple class="clickable">
+      <mat-card-content>
+        <div class="header-part">
+          <span>
+            <mat-card-title>{{ book?.volumeInfo.title }}</mat-card-title>
+            <mat-card-subtitle
+              >{{ book?.volumeInfo.subtitle }}
+            </mat-card-subtitle>
+          </span>
+          <span>
+            <img
+              mat-card-image
+              src="{{ book?.volumeInfo.imageLinks?.smallThumbnail }}"
+              alt="Photo of a Shiba Inu"
+              class="imgs"
+            />
+          </span>
+        </div>
+        <p>
+          {{
+            book.volumeInfo.description
+              ? book.volumeInfo.description.length > 100
+                ? (book.volumeInfo.description | slice: 0:100) + '...'
+                : book.volumeInfo.description
+              : ''
+          }}
+        </p>
+        <div class="footer-part">
+          <span>
+            <b>Written By:</b><br />
+            <p>
+              {{ book?.volumeInfo.authors }}
+            </p>
+          </span>
+          <span>
+            <button
+              mat-button
+              class="cart-book-remove-button"
+              (click)="removeItem(book)"
+            >
+              <mat-icon style="color: rgb(236, 77, 125)"
+                >remove_shopping_cart</mat-icon
+              >
+            </button></span
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div>
+    <button class="button-component" (click)="purchaseBook()">
+      Proceed to Purchase
+    </button>
+  </div>
+</div>

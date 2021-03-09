@@ -1,0 +1,53 @@
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav
+    class="app-sidenav mat-elevation-z10"
+    [opened]="true"
+    [mode]="'side'"
+  >
+    <mat-toolbar color="primary"
+      ><mat-icon class="app-icon">menu</mat-icon> Enlight</mat-toolbar
+    >
+    <mat-nav-list>
+      <a mat-list-item routerLink="search">
+        <mat-icon mat-list-icon>search</mat-icon>
+        <span>Search</span>
+      </a>
+    </mat-nav-list>
+    <mat-nav-list>
+      <a mat-list-item routerLink="cart">
+        <mat-icon
+          mat-list-icon
+          matBadge="{{ count }}"
+          [matBadgeHidden]="count === 0"
+          matBadgePosition="before"
+          matBadgeColor="warn"
+          >shopping_cart</mat-icon
+        >
+        <span>Cart</span>
+      </a>
+    </mat-nav-list>
+    <mat-nav-list>
+      <a mat-list-item routerLink="collection">
+        <mat-icon
+          mat-list-icon
+          matBadge="{{ collectionCount }}"
+          [matBadgeHidden]="collectionCount === 0"
+          matBadgePosition="before"
+          matBadgeColor="warn"
+          >collections</mat-icon
+        >
+        <span>My Collections</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <div class="app-sidenav-content">
+    <mat-toolbar color="primary" class="position-fixed">
+      <button mat-button aria-label="Menu" class="sidenav-toggle">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</mat-sidenav-container>
