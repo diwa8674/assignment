@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import { State } from './books.reducer';
 
 const getBooksState = createFeatureSelector<State>('books');
@@ -10,12 +11,11 @@ export const selectBooksList = createSelector(
 
 export const selectBookListById = (id: string) =>
   createSelector(getBooksState, (state) => {
+    /* istanbul ignore else */
     if (state) {
       return state.list.find((item) => {
         return item.id === id;
       });
-    } else {
-      return [];
     }
   });
 
@@ -30,12 +30,11 @@ export const getCartItemsCount = createSelector(getBooksState, (state) =>
 
 export const selectCartListById = (id: string) =>
   createSelector(getBooksState, (state) => {
+    /* istanbul ignore else */
     if (state) {
       return state.cartItems.find((cartItems) => {
         return cartItems.id === id;
       });
-    } else {
-      return [];
     }
   });
 

@@ -20,13 +20,16 @@ describe('BooksReducer', () => {
         ...initialState,
         list: [],
       };
-      const result = reducer(undefined, {} as any);
+      const result = reducer(undefined, {} as BookActions.Actions);
       expect(result).toEqual(expected);
     });
   });
 
   describe('reducer should store data after search operation', () => {
-    function searchBooks(booksInitialState: any, searchKey: string) {
+    function searchBooks(
+      booksInitialState: fromBooks.State,
+      searchKey: string
+    ) {
       const createAction = new BookActions.Search(searchKey);
 
       const result = reducer(booksInitialState, createAction);
@@ -37,7 +40,7 @@ describe('BooksReducer', () => {
       };
       expect(result).toEqual(expected);
     }
-    function searchBooksDone(booksInitialState: any) {
+    function searchBooksDone(booksInitialState: fromBooks.State) {
       const createAction = new BookActions.SearchDone([book1]);
 
       const result = reducer(booksInitialState, createAction);
@@ -61,9 +64,12 @@ describe('BooksReducer', () => {
   });
 
   describe(
-    'add book to cart/remove book from cart successfully upon ' + 'selection',
+    'add book to cart from cart successfully upon ' + 'selection',
     () => {
-      function addBookToCart(booksInitialState: any, expected: Object) {
+      function addBookToCart(
+        booksInitialState: fromBooks.State,
+        expected: unknown
+      ) {
         const createAction = new BookActions.AddBook('1');
 
         const result = reducer(booksInitialState, createAction);
@@ -101,7 +107,10 @@ describe('BooksReducer', () => {
     'able to remove book from the cart when clicked on remove button' +
       ' on the book list',
     () => {
-      function removeBookFromCart(booksInitialState: any, expected: Object) {
+      function removeBookFromCart(
+        booksInitialState: fromBooks.State,
+        expected: unknown
+      ) {
         const createAction = new BookActions.RemoveBook('1');
 
         const result = reducer(booksInitialState, createAction);
@@ -126,12 +135,13 @@ describe('BooksReducer', () => {
       'book to collection list',
     () => {
       function removeBookFromCartAndAddToCollection(
-        booksInitialState: any,
-        expected: Object
+        booksInitialState: fromBooks.State,
+        expected: unknown
       ) {
         const createAction = new BookActions.AddBookToCollection(
           new BooksDetail({
             id: '1',
+            volumeInfo: generateMockBook().volumeInfo,
             name: 'angular',
             email: 'cdcd@y.com',
             phone: '9809879',
@@ -143,12 +153,17 @@ describe('BooksReducer', () => {
         expect(result).toEqual(expected);
       }
       function addBookToCollectionEvenNoBillingInfo(
-        booksInitialState: any,
-        expected: Object
+        booksInitialState: fromBooks.State,
+        expected: unknown
       ) {
         const createAction = new BookActions.AddBookToCollection(
           new BooksDetail({
             id: '1',
+            volumeInfo: generateMockBook().volumeInfo,
+            name: 'angular',
+            email: 'cdcd@y.com',
+            phone: '9809879',
+            address: 'csdcdscdscsdcs',
           })
         );
 
@@ -164,8 +179,8 @@ describe('BooksReducer', () => {
             cartItems: [],
             collectionItems: [
               new BooksDetail({
-                items: book1,
                 id: '1',
+                volumeInfo: generateMockBook().volumeInfo,
                 name: 'angular',
                 email: 'cdcd@y.com',
                 phone: '9809879',
@@ -194,8 +209,12 @@ describe('BooksReducer', () => {
             cartItems: [],
             collectionItems: [
               new BooksDetail({
-                items: book1,
                 id: '1',
+                volumeInfo: generateMockBook().volumeInfo,
+                name: 'angular',
+                email: 'cdcd@y.com',
+                phone: '9809879',
+                address: 'csdcdscdscsdcs',
               }),
             ],
           };
@@ -221,8 +240,8 @@ describe('BooksReducer', () => {
             cartItems: [],
             collectionItems: [
               new BooksDetail({
-                items: book1,
                 id: '1',
+                volumeInfo: null,
                 name: 'angular',
                 email: 'cdcd@y.com',
                 phone: '9809879',
@@ -235,8 +254,8 @@ describe('BooksReducer', () => {
             cartItems: [book1],
             collectionItems: [
               new BooksDetail({
-                items: book1,
                 id: '1',
+                volumeInfo: null,
                 name: 'angular',
                 email: 'cdcd@y.com',
                 phone: '9809879',

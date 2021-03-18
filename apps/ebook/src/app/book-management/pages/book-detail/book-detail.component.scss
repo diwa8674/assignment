@@ -22,3 +22,13 @@
   background-color: rgb(221, 16, 50);
   color: white;
 }
+.footer-part {
+  display: flex;
+  justify-content: space-between;
+}
+.cart-item-remove-button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  outline: none;
+}

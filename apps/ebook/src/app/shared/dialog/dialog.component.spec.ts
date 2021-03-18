@@ -17,7 +17,6 @@ describe('DialogComponent', () => {
   });
 
   it('can load instance', () => {
-    component.ngOnInit();
     expect(component).toBeTruthy();
   });
 });

@@ -2,10 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { concat, of, throwError } from 'rxjs';
 
-import { BookManagementComponent } from './book-management.component';
+import { NGXLogger } from 'ngx-logger';
+
 import { BooksFacade } from '../store';
+import { BookManagementComponent } from './book-management.component';
 
 describe('BookManagementComponent', () => {
   let component: BookManagementComponent;
@@ -14,6 +16,7 @@ describe('BookManagementComponent', () => {
 
   beforeEach(() => {
     const mediaMatcherStub = () => ({ matchMedia: () => ({}) });
+    const nGXLoggerStub = () => ({ error: () => ({}) });
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
@@ -22,13 +25,16 @@ describe('BookManagementComponent', () => {
         {
           provide: BooksFacade,
           useValue: {
-            getCartItemsCount: () => of(1),
-            getCollectionItemsCount: () => of(2),
+            getCartItemsCount: () =>
+              concat(of(1), throwError(new Error('oops!'))),
+            getCollectionItemsCount: () =>
+              concat(of(1), throwError(new Error('oops!'))),
           },
         },
         { provide: MediaMatcher, useFactory: mediaMatcherStub },
+        { provide: NGXLogger, useFactory: nGXLoggerStub },
       ],
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(BookManagementComponent);
     component = fixture.componentInstance;
     booksFacade = TestBed.inject(BooksFacade);
@@ -36,6 +42,10 @@ describe('BookManagementComponent', () => {
 
   it('can load instance', () => {
     expect(component).toBeTruthy();
+  });
+
+  it(`subscriptions has default value`, () => {
+    expect(component.subscriptions).toEqual([]);
   });
 
   it(
@@ -49,4 +59,15 @@ describe('BookManagementComponent', () => {
       expect(booksFacade.getCollectionItemsCount).toHaveBeenCalled();
     })
   );
+
+  describe('ngOnInit', () => {
+    it('makes expected calls', () => {
+      const nGXLoggerStub: NGXLogger = fixture.debugElement.injector.get(
+        NGXLogger
+      );
+      spyOn(nGXLoggerStub, 'error').and.callThrough();
+      component.ngOnInit();
+      expect(nGXLoggerStub.error).toHaveBeenCalled();
+    });
+  });
 });

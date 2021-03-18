@@ -1,19 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs';
+
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable } from 'rxjs';
 import { cold, hot } from 'jasmine-marbles';
 
-import { BooksDetail, SearchBooksService } from '../core';
+import { generateMockBook, SearchBooksService } from '../core';
 import { BookEffects } from './books.effects';
 import * as BookActions from './books.actions';
 
 describe('BookEffects', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let db: any;
   let effects: BookEffects;
-  let actions$: Observable<any>;
+  let actions$: Observable<unknown>;
 
-  const book1 = { items: {} } as BooksDetail;
+  const book1 = generateMockBook();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,7 +43,7 @@ describe('BookEffects', () => {
       const expected = cold('--c', {
         c: {
           type: BookActions.SEARCH_DONE,
-          payload: book1.items,
+          payload: book1,
         },
       });
 

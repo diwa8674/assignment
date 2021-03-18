@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 import * as Facade from '../../../store';
-import { BooksDetail } from '../../../core';
 
 @Component({
   selector: 'assignment-cart',
@@ -11,12 +8,11 @@ import { BooksDetail } from '../../../core';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
-  books: Observable<BooksDetail[]>;
+  componentType = 'cart';
   showAllCartItems: boolean;
-  book: any;
-  bookId: string;
+  cartBookId: string;
 
-  constructor(private facade: Facade.BooksFacade, private router: Router) {}
+  constructor(private facade: Facade.BooksFacade) {}
 
   ngOnInit(): void {
     this.displayAllCartItems();
@@ -24,33 +20,15 @@ export class CartComponent implements OnInit {
 
   displayAllCartItems(): void {
     this.showAllCartItems = true;
-    this.books = this.facade.loadBooksInCart$;
   }
-  onCardClick(item: Object): void {
-    this.bookId = this.getIdOfBook(item);
+
+  onCardClick(bookId: string): void {
     this.showAllCartItems = false;
-    this.facade.getBookDetailsWithIdInCart(this.bookId).subscribe((data) => {
-      this.book = data;
-    });
+    this.cartBookId = bookId;
   }
 
-  getIdOfBook(item: Object): string {
-    try {
-      return JSON.parse(JSON.stringify(item)).id;
-    } catch (error) {
-      console.log('Error occured when converting json into object');
-    }
-  }
-  purchaseBook(): void {
-    this.router.navigate(['/buy', this.bookId]);
-  }
-
-  removeItem(item: Object): void {
-    this.facade.removeItemFromCart(this.getIdOfBook(item));
+  removeItem(bookId: string): void {
+    this.facade.removeItemFromCart(bookId);
     this.displayAllCartItems();
-  }
-
-  trackByBookId(index: number, book: any): string {
-    return book.id;
   }
 }

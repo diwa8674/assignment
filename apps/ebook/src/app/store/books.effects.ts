@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
+
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import * as BookActions from './books.actions';
 import { SearchBooksService } from '../core';
@@ -25,7 +26,7 @@ export class BookEffects {
           mergeMap((list) => [
             {
               type: BookActions.SEARCH_DONE,
-              payload: list.items,
+              payload: list,
             },
           ])
         );

@@ -1,42 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 import * as Facade from '../../../store';
-import { BooksDetail } from '../../../core';
-import { Observable } from 'rxjs';
+import { Utils } from '../../../shared';
 
 @Component({
   selector: 'assignment-search-books',
   templateUrl: './search-books.component.html',
   styleUrls: ['./search-books.component.scss'],
 })
-export class SearchBooksComponent implements OnInit {
-  searchText: any;
-  books: Observable<BooksDetail[]>;
+export class SearchBooksComponent {
+  componentType = 'search';
+  searchText: string;
 
-  constructor(private facade: Facade.BooksFacade, private router: Router) {}
-
-  ngOnInit(): void {}
+  constructor(private facade: Facade.BooksFacade, private utils: Utils) {}
 
   async searchBooks(searchText: string) {
-    /* istanbul ignore else*/
-    if (!!searchText) {
+    /* istanbul ignore else */
+    if (!this.utils.isBlank(searchText)) {
       this.facade.searchBooks(searchText);
-      this.books = this.facade.loadBooks$;
     }
-  }
-
-  onCardClick(item: Object) {
-    let bookId: string;
-    try {
-      bookId = JSON.parse(JSON.stringify(item)).id;
-    } catch (error) {
-      console.log('Error occured when converting json into object');
-    }
-    this.router.navigate(['/details', bookId]);
-  }
-
-  trackByBookId(index: number, book: any): string {
-    return book.id;
   }
 }

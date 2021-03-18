@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SearchBooksComponent } from './pages';
-import { CartComponent } from './pages';
-import { CollectionComponent } from './pages';
-import { BookDetailComponent } from './pages';
-import { PurchaseBookComponent } from './pages';
+import {
+  SearchBooksComponent,
+  CartComponent,
+  CollectionComponent,
+  BookDetailComponent,
+  PurchaseBookComponent,
+} from './pages';
 
 const routes: Routes = [
   {

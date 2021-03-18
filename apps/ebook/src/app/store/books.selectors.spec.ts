@@ -13,6 +13,7 @@ describe('selector test', () => {
   describe('', () => {
     const expected = { id: '1', name: 'cdscds' } as BooksDetail;
     it('selectBooksList should return list of book details properly', () => {
+      expect(fromSelector.selectBooksList.projector(state)).toEqual(state.list);
       expect(fromSelector.selectBookListById('1').projector(state)).toEqual(
         expected
       );
@@ -23,6 +24,9 @@ describe('selector test', () => {
     () => {
       const expected = { id: '1', name: 'cdscds' } as BooksDetail;
       it('selectCartListById should return list of book details properly', () => {
+        expect(fromSelector.selectCartList.projector(state)).toEqual(
+          state.cartItems
+        );
         expect(fromSelector.selectCartListById('1').projector(state)).toEqual(
           expected
         );

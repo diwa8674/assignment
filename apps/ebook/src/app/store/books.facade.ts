@@ -9,15 +9,18 @@ import * as BooksSelectors from './books.selectors';
 
 @Injectable()
 export class BooksFacade {
-  loadBooks$ = this.store.select(BooksSelectors.selectBooksList);
-
-  loadBooksInCart$ = this.store.select(BooksSelectors.selectCartList);
-
-  loadBooksInCollection$ = this.store.select(
-    BooksSelectors.selectCollectionList
-  );
-
   constructor(private store: Store<BooksReducers.State>) {}
+
+  loadBooksInCart() {
+    return this.store.select(BooksSelectors.selectCartList);
+  }
+
+  loadBooksInCollection() {
+    return this.store.select(BooksSelectors.selectCollectionList);
+  }
+  loadBooks() {
+    return this.store.select(BooksSelectors.selectBooksList);
+  }
 
   getCollectionItemsCount() {
     return this.store.select(BooksSelectors.getCollectionItemsCount);

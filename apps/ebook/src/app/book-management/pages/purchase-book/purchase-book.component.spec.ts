@@ -2,11 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
 import { StoreModule } from '@ngrx/store';
 
-import { PurchaseBookComponent } from './purchase-book.component';
 import { BooksFacade } from '../../../store';
+import { PurchaseBookComponent } from './purchase-book.component';
 
 describe('PurchaseBookComponent', () => {
   let component: PurchaseBookComponent;
@@ -14,11 +15,9 @@ describe('PurchaseBookComponent', () => {
 
   beforeEach(() => {
     const matDialogStub = () => ({ open: () => ({}) });
-    const activatedRouteStub = () => ({
-      params: { subscribe: (f: (arg0: {}) => any) => f({}) },
-    });
+    const activatedRouteStub = () => ({ params: { subscribe: (f) => f({}) } });
     TestBed.configureTestingModule({
-      imports: [FormsModule, StoreModule.forRoot({})],
+      imports: [StoreModule.forRoot({})],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [PurchaseBookComponent],
       providers: [
@@ -41,18 +40,21 @@ describe('PurchaseBookComponent', () => {
     );
   });
 
+  it(`subscriptions has default value`, () => {
+    expect(component.subscriptions).toEqual([]);
+  });
+
   describe('onSubmit', () => {
     it('makes expected calls', () => {
+      component.ngOnInit();
       const matDialogStub: MatDialog = fixture.debugElement.injector.get(
         MatDialog
       );
       spyOn(matDialogStub, 'open').and.callThrough();
       component.onSubmit();
       expect(matDialogStub.open).toHaveBeenCalled();
+      component.subscriptions = [new Subscription()];
+      component.ngOnDestroy();
     });
-  });
-
-  it('page loads initially without any error', () => {
-    component.ngOnInit();
   });
 });

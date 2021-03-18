@@ -1,33 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
 
-import { BookDetailComponent } from './book-detail.component';
+import { StoreModule } from '@ngrx/store';
+import { concat, of, throwError } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
+
+import { BooksDetail, generateMockBook } from '../../../core';
 import { BooksFacade } from '../../../store';
+import { BookDetailComponent } from './book-detail.component';
 
 describe('BookDetailComponent', () => {
   let component: BookDetailComponent;
   let fixture: ComponentFixture<BookDetailComponent>;
+  const booksDetailStub: BooksDetail = generateMockBook();
 
   beforeEach(() => {
+    const activatedRouteStub = () => ({
+      snapshot: { paramMap: { get: () => ({}) } },
+    });
     const routerStub = () => ({ navigate: () => ({}) });
+    const nGXLoggerStub = () => ({ error: () => ({}) });
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({})],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [BookDetailComponent],
       providers: [
+        { provide: ActivatedRoute, useFactory: activatedRouteStub },
+        { provide: Router, useFactory: routerStub },
+        { provide: NGXLogger, useFactory: nGXLoggerStub },
         {
-          provide: ActivatedRoute,
+          provide: BooksFacade,
           useValue: {
-            snapshot: {
-              paramMap: convertToParamMap({ id: 'pqShDwAAQBAJ' }),
-            },
+            getBookDetailsWithId: () =>
+              concat(of(booksDetailStub), throwError(new Error('oops!'))),
+            getBookDetailsWithIdInCart: () =>
+              concat(of(booksDetailStub), throwError(new Error('oops!'))),
+            addBookToCartList: () => ({}),
           },
         },
-        { provide: Router, useFactory: routerStub },
-        { provide: BooksFacade },
       ],
     });
     fixture = TestBed.createComponent(BookDetailComponent);
@@ -38,10 +50,21 @@ describe('BookDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('screen loads without any error', () => {
-    const initialSpy = jest.spyOn(component, 'ngOnInit');
-    component.ngOnInit();
-    expect(initialSpy).toHaveBeenCalled();
+  it(`subscriptions has default value`, () => {
+    expect(component.subscriptions).toEqual([]);
+  });
+
+  describe('ngOnInit should be loaded without issues', () => {
+    it('makes expected calls', () => {
+      const nGXLoggerStub: NGXLogger = fixture.debugElement.injector.get(
+        NGXLogger
+      );
+      spyOn(nGXLoggerStub, 'error').and.callThrough();
+      component.ngOnInit();
+      expect(nGXLoggerStub.error).toHaveBeenCalled();
+      component.componentType = 'cart';
+      component.ngOnInit();
+    });
   });
 
   describe('purchaseBook', () => {
@@ -53,9 +76,15 @@ describe('BookDetailComponent', () => {
     });
   });
 
-  it('check whether books can be added to cart on the book details page', () => {
-    const initialSpy = jest.spyOn(component, 'addToCart');
-    component.addToCart();
-    expect(initialSpy).toHaveBeenCalled();
+  describe('check whether able to get all book details properly', () => {
+    it('makes expected calls', () => {
+      spyOn(component, 'getBookImageLinks').and.callThrough();
+      component.book = booksDetailStub;
+      component.getBookImageLinks();
+      component.getBookInfo('description');
+      component.addToCart();
+      component.removeItem();
+      expect(component.getBookImageLinks).toHaveBeenCalled();
+    });
   });
 });

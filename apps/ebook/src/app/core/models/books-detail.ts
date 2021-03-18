@@ -1,33 +1,50 @@
-export interface IBooksDetail {
-  items: {};
+export class BooksDetail {
   id: string;
+  volumeInfo: {
+    title: string;
+    subtitle: string;
+    authors: string[];
+    publisher: string;
+    publishDate: string;
+    description: string;
+    averageRating: number;
+    ratingsCount: number;
+    imageLinks: {
+      thumbnail: string;
+      smallThumbnail: string;
+    };
+  };
   name: string;
   email: string;
   phone: string;
   address: string;
-}
-
-export class BooksDetail implements IBooksDetail {
-  items: {};
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  constructor(obj?: any) {
-    this.items = obj.items || {};
-    this.id = obj.id || '';
-    this.name = obj.name || '';
-    this.email = obj.email || '';
-    this.phone = obj.phone || '';
-    this.address = obj.address || '';
+  constructor(booksDetail?: BooksDetail) {
+    this.id = booksDetail.id || '';
+    this.volumeInfo = booksDetail.volumeInfo || null;
+    this.name = booksDetail.name || '';
+    this.email = booksDetail.email || '';
+    this.phone = booksDetail.phone || '';
+    this.address = booksDetail.address || '';
   }
 }
 
 export function generateMockBook(): BooksDetail {
   return {
-    items: {},
     id: '1',
+    volumeInfo: {
+      title: 'title',
+      subtitle: 'subtitle',
+      authors: ['author'],
+      publisher: 'publisher',
+      publishDate: '',
+      description: 'description',
+      averageRating: 3,
+      ratingsCount: 5,
+      imageLinks: {
+        thumbnail: 'string',
+        smallThumbnail: 'string',
+      },
+    },
     name: 'angular',
     email: 'cdcd@y.com',
     phone: '9809879',

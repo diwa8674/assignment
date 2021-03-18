@@ -3,3 +3,4 @@ export * from './book-detail/book-detail.component';
 export * from './cart/cart.component';
 export * from './collection/collection.component';
 export * from './purchase-book/purchase-book.component';
+export * from './books-list/books-list.component';

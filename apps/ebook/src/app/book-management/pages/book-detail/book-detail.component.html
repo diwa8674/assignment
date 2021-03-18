@@ -3,15 +3,13 @@
     ><mat-card-content>
       <div class="header-part">
         <span>
-          <mat-card-title>{{ book?.volumeInfo.title }}</mat-card-title>
-          <mat-card-subtitle
-            >{{ book?.volumeInfo.subtitle }}
-          </mat-card-subtitle>
+          <mat-card-title>{{ getBookInfo('title') }}</mat-card-title>
+          <mat-card-subtitle>{{ getBookInfo('subtitle') }} </mat-card-subtitle>
         </span>
         <span>
           <img
             mat-card-image
-            src="{{ book?.volumeInfo.imageLinks?.smallThumbnail }}"
+            src="{{ getBookImageLinks() }}"
             alt="Photo of a Shiba Inu"
             class="imgs"
           />
@@ -22,42 +20,66 @@
         ><ngb-rating
           class="rating-component"
           [max]="5"
-          [(rate)]="book?.volumeInfo.averageRating"
+          [(rate)]="averageRating"
           [readonly]="true"
         ></ngb-rating>
       </p>
       <p>
         <b>Publisher:</b>
-        "{{ book?.volumeInfo.publisher }}"
+        "{{ getBookInfo('publisher') }}"
       </p>
       <p>
         <b>Page Count:</b>
-        {{ book?.volumeInfo.pageCount }}
+        {{ getBookInfo('pageCount') }}
       </p>
       <p>
         <b>Language:</b>
-        {{ book?.volumeInfo.language }}
+        {{ getBookInfo('language') }}
       </p>
       <p>
-        {{ book?.volumeInfo.description }}
+        {{ getBookInfo('description') }}
       </p>
-      <b>Written By:</b><br />
-      <p>
-        {{ book?.volumeInfo.authors }}
+      <b *ngIf="!cartComponent">Written By:</b><br />
+      <p *ngIf="!cartComponent">
+        {{ getBookInfo('authors') }}
       </p>
-      <div>
+      <div *ngIf="!cartComponent">
         <span
           ><button class="button-component" (click)="addToCart()">
-            ADD TO CART
-          </button> </span
-        ><button
-          style="margin-left: 20px"
-          class="button-component"
-          (click)="purchaseBook()"
+            ADD TO CART</button
+          ><button
+            style="margin-left: 20px"
+            class="button-component"
+            (click)="purchaseBook()"
+          >
+            BUY
+          </button></span
         >
-          BUY</button
-        ><span></span>
+      </div>
+      <div class="footer-part" *ngIf="cartComponent">
+        <span>
+          <b>Written By:</b><br />
+          <p>
+            {{ getBookInfo('authors') }}
+          </p>
+        </span>
+        <span>
+          <button
+            mat-button
+            class="cart-book-remove-button"
+            (click)="removeItem()"
+          >
+            <mat-icon style="color: rgb(236, 77, 125)"
+              >remove_shopping_cart</mat-icon
+            >
+          </button></span
+        >
       </div>
     </mat-card-content>
   </mat-card>
+</div>
+<div *ngIf="cartComponent">
+  <button class="button-component" (click)="purchaseBook()">
+    Proceed to Purchase
+  </button>
 </div>

@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { MaterialModule } from './shared';
-import { AppComponent } from './app.component';
-import { BookManagementComponent } from './book-management';
-import { BookManagementModule } from './book-management';
-import { CoreModule } from './core';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { EffectsModule } from '@ngrx/effects';
-import { DialogComponent } from './shared/dialog/dialog.component';
+
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import {
+  BookManagementComponent,
+  BookManagementModule,
+} from './book-management';
+import { CoreModule } from './core';
+import { DialogComponent, Utils, MaterialModule } from './shared';
+
 @NgModule({
   declarations: [AppComponent, BookManagementComponent, DialogComponent],
   imports: [
@@ -39,8 +42,11 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     CoreModule,
     EffectsModule.forRoot([]),
     NgbModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG,
+    }),
   ],
-  providers: [],
+  providers: [Utils],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

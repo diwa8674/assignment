@@ -1,5 +1,4 @@
 import { BooksDetail } from '../core';
-
 import * as BookActions from './books.actions';
 
 export interface State {
@@ -100,12 +99,12 @@ function checkCollectionValidity(
     )[0];
     return state.collectionItems.concat(
       new BooksDetail({
-        items: filteredData,
         id: filteredData.id,
-        name: action.payload.name ? action.payload.name : '',
-        email: action.payload.email ? action.payload.email : '',
-        phone: action.payload.phone ? action.payload.phone : '',
-        address: action.payload.address ? action.payload.address : '',
+        volumeInfo: filteredData.volumeInfo,
+        name: action.payload.name,
+        email: action.payload.email,
+        phone: action.payload.phone,
+        address: action.payload.address,
       })
     );
   }
